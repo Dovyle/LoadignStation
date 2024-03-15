@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="'UTF-8">
+        <title>E-plete for E-Vehicle</title>
+        <link rel="stylesheet" href="/ls_design.css">
+    </head>
+<body>
+    <img class="USCBUILDING" src="/Assets/USCVirtualBackdrop_White.jpg"/>
+    <div class="EDGE LEFT"></div>
+    <div class="EDGE RIGHT"></div>
+    <div class="EDGE TOP"></div>
+    <div class="EDGE BOTTOM"></div>
+    <img class="USCLOGO" src="/Assets/USCLogo_FlushLeft.png"/>
+
+    <div id="HOMEPAGE">
+        <p class="TITLE EPLETE">E - PLETE</p>
+        <p class="TITLE LOADINGSTATION">LOADING STATION</p>
+        <p class="TITLE SCAN">Scan your ID below</p>
+    </div>
+
+    <div id="STUDENTPAGE">
+        <p class="TITLE STUDENT">PASSENGER</p>
+        <p id="studentname">-----</p>
+        <img class="STUDENTLOGO" src="/Assets/passenger.jpg"/>
+        <p class="INSTRUCTION1">PLEASE INSERT YOUR BILL</p>
+        <p class="INSTRUCTION2">(Recommended paper bills: P20, P50, P100)</p>
+        <p class="WARNING1">Warning: Once bill is inserted, it cannot be returned anymore</p>
+        <div class="CONTAINERBOX">
+            <div class="BALANCEBOX">
+                <p class="NEWBALANCE">Current Balance</p>
+                <p id="currentbalance">0</p>
+            </div>
+            <img class="ARROW" src="/Assets/Arrow.jpg"/>
+            <div class="BALANCEBOX">
+                <p class="NEWBALANCE">New Balance</p>
+                <p id="studentbalance">0</p>
+            </div>
+        </div>
+        <form class="home" action="">
+            <button class="return">GO BACK HOME</button>
+        </form>
+    </div>
+
+    <div id="DRIVERPAGE">
+        <p class="TITLE DRIVER">DRIVER</p>
+        <p id="drivername">-----</p>
+        <img class="DRIVERLOGO" src="/Assets/driver.jpg"/>
+        <div class="CONTAINERBOX">
+            <div class="DRIVERBALANCEBOX">
+                <p class="NEWBALANCE">Current Balance</p>
+                <p id="driverbalance">0</p>
+            </div>
+            <div class="DRIVERBALANCEBOX">
+                <p class="NEWBALANCE">Total Passengers</p>
+                <p id="totalpassenger">0</p>
+            </div>
+        </div>
+        <form class="home" action="">
+            <button class="return">GO BACK HOME</button>
+        </form>
+    </div>
+    
+    <div id="THANKYOUPAGE">
+        <p class="TITLE EPLETE">TRANSACTION</p>
+        <p class="TITLE LOADINGSTATION">SUCCESSFUL</p>
+        <p class="TITLE SCAN">Thank you for loading!</p>    
+    </div>
+
+    <div id="NOTREGISTEREDPAGE">
+        <p class="TITLE YOURID">YOUR ID IS</p>
+        <p class="TITLE NOTYET">NOT YET REGISTERED</p>
+        <p class="TITLE SCAN">Please register first.</p>  
+    </div>
+
+    <h1><span id="count"></span></h1>
+
+    <div id="LOADING_CONTAINER">
+        <img class="LOADING" src="/Assets/loading.gif"/>
+    </div>
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    var user_balance = 0;
+
+
+    let count = 0;
+    let counting = true;
+    let intervalId = null;
+    let commandSent = false;
+
+    function updateCount() {
+        if (counting) {
+            count++;
+            if (count > 11) {
+                document.querySelectorAll('div').forEach(div => {
+                    if (div.id !== 'HOMEPAGE' && div.style.display === 'block') {
+                        div.style.display = 'none';
+                    }
+                });
+                if (!commandSent) {
+                    document.getElementById("HOMEPAGE").style.display = "block";
+                    let buttonstr = document.querySelector(".return").innerHTML;
+                    send_str = buttonstr === "CREDIT AMOUNT" ? `${buttonstr},${user_balance}` : `${buttonstr},0`;
+                    socket.emit('command', send_str);
+                    commandSent= true;
+                }
+
+                counting = false;
+                clearInterval(intervalId);
+            }
+        }
+        document.getElementById('count').textContent = count;
+    }
+
+    function resetCount() {
+        count = 0;
+        commandSent= false;
+        document.getElementById('count').textContent = count;
+    }
+
+    document.addEventListener('click', resetCount);
+    document.addEventListener('mousemove', resetCount);
+
+    // let timer;
+    // let commandSent = false; // Flag to track if the command has been sent
+
+    // function resetTimer() {
+    //     let homepageDisplayed = document.getElementById('HOMEPAGE').style.display === 'block';
+
+    //     if (!homepageDisplayed) {
+    //         clearTimeout(timer);
+    //         timer = setTimeout(() => {
+                // document.querySelectorAll('div').forEach(div => {
+                //     if (div.id !== 'HOMEPAGE' && div.style.display === 'block') {
+                //         div.style.display = 'none';
+                //     }
+                // });
+
+                // document.getElementById("HOMEPAGE").style.display = "block"; // Show HOMEPAGE
+
+    //             if (!commandSent) {
+                    // let buttonstr = document.querySelector(".return").innerHTML;
+                    // send_str = buttonstr === "CREDIT AMOUNT" ? `${buttonstr},${user_balance}` : `${buttonstr},0`;
+                    // socket.emit('command', send_str);
+                    // commandSent = true;
+    //             }
+    //             commandSent = false; 
+    //         }, 10000); // 30 seconds
+    //     }
+    // }
+    
+    // function simulateMouseClick() {
+    //     var event = new MouseEvent('click', {
+    //         view: window,
+    //         bubbles: true,
+    //         cancelable: true
+    //     });
+
+    //     document.body.dispatchEvent(event);
+    // }
+
+    // ['click', 'mousemove', 'keypress', 'touchstart'].forEach(eventName => {
+    //     document.addEventListener(eventName, resetTimer);
+    //     console.log(`Added event listener for ${eventName}`);
+    // });
+
+    document.querySelectorAll(".home").forEach(function(item) {
+        item.addEventListener('submit', function(e){
+            e.preventDefault();
+            let strBtn = item.querySelector(".return").innerHTML;
+            let send_str = "";
+            document.getElementById("STUDENTPAGE").style.display = "none"; // Hide STUDENTPAGE
+            document.getElementById("DRIVERPAGE").style.display = "none"; // Hide DRIVERPAGE
+            if(strBtn == "CREDIT AMOUNT"){
+                let string_balance = user_balance.toString() 
+                send_str = strBtn + "," + string_balance;
+                document.getElementById("LOADING_CONTAINER").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("LOADING_CONTAINER").style.display = "none"; // Hide THANKYOUPAGE
+                    document.getElementById("THANKYOUPAGE").style.display = "block"; // Show HOMEPAGE
+                }, 2000);
+                setTimeout(function() {
+                    document.getElementById("THANKYOUPAGE").style.display = "none"; // Hide THANKYOUPAGE
+                    document.getElementById("HOMEPAGE").style.display = "block"; // Show HOMEPAGE
+                    // clearTimeout(timer);
+                }, 6000);   
+            } else {
+                send_str = strBtn + ",0";
+                document.getElementById("HOMEPAGE").style.display = "block"; // Show HOMEPAGE
+                // setTimeout(() => {
+                //     clearTimeout(timer);
+                // }, 2000); 
+            }
+            commandSent = true;
+            socket.emit('command', send_str);
+            count = 12;
+        });
+    });
+
+    function studenthandleTag(name, balance){
+        document.getElementById("studentname").innerHTML = name;
+        document.getElementById("studentbalance").innerHTML = balance;
+        document.getElementById("currentbalance").innerHTML = balance;
+        user_balance = parseInt(balance);
+    }
+
+    function driverhandleTag(name, balance, total_passenger){
+        document.getElementById("drivername").innerHTML = name;
+        document.getElementById("driverbalance").innerHTML = balance;
+        document.getElementById("totalpassenger").innerHTML = total_passenger;
+        user_balance = parseInt(balance);
+    }
+
+    function handleLoad(amount){
+        let nLoad = user_balance + parseInt(amount);
+        user_balance = nLoad;
+        console.log(amount)
+        document.getElementById("studentbalance").innerHTML = nLoad;
+        resetTimer(); // Reset the timer after updating the balance
+    }
+
+    socket.on('message to web', function(msg) {
+        let msgArray = String(msg).split(',');
+        console.log(msgArray)
+        if(msgArray[0] == 'TAG'){
+            document.getElementById("HOMEPAGE").style.display = "none";
+            counting = true;
+            count = 0;
+            commandSent=false;
+            intervalId = setInterval(updateCount, 1000);
+            // simulateMouseClick();
+            if(msgArray[4] == 'RIDER'){
+                console.log('Student Success')
+                document.getElementById("LOADING_CONTAINER").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("LOADING_CONTAINER").style.display = "none"; // Hide THANKYOUPAGE
+                    document.getElementById("STUDENTPAGE").style.display = "block"; // Show HOMEPAGE
+                }, 2000);
+                document.getElementById("studentbalance").style.color = "black";
+                studenthandleTag( msgArray[2], msgArray[3])
+            }
+            else if(msgArray[4] == 'DRIVER'){
+                document.getElementById("LOADING_CONTAINER").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("LOADING_CONTAINER").style.display = "none"; // Hide THANKYOUPAGE
+                    document.getElementById("DRIVERPAGE").style.display = "block"; // Show HOMEPAGE
+                }, 2000);
+                driverhandleTag( msgArray[2], msgArray[3], msgArray[5])
+            }
+            document.querySelectorAll(".return").forEach(function(item) {
+                item.innerHTML = "GO BACK HOME";
+            });
+        }
+        else if(msgArray[0] == 'LOAD'){
+            handleLoad(parseInt(msgArray[1]));
+            console.log(msg, parseInt(msgArray[1]))
+            document.getElementById("studentbalance").style.color = "#ff0d00";
+            document.querySelectorAll(".return").forEach(function(item) {
+                item.innerHTML = "CREDIT AMOUNT";
+            });       
+        }
+        else if(msgArray[0] == 'Invalid'){
+            document.getElementById("HOMEPAGE").style.display = "none";
+            document.getElementById("LOADING_CONTAINER").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("LOADING_CONTAINER").style.display = "none"; // Hide THANKYOUPAGE
+                document.getElementById("NOTREGISTEREDPAGE").style.display = "block"; // Show HOMEPAGE
+            }, 2000);
+            setTimeout(function() {
+                document.getElementById("NOTREGISTEREDPAGE").style.display = "none"; // Hide NOTREGISTEREDPAGE
+                document.getElementById("HOMEPAGE").style.display = "block"; // Show HOMEPAGE
+            }, 6000);
+        }
+    });
+</script>
+</html> 

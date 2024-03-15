@@ -1,0 +1,236 @@
+html {
+    width: 1080px;
+    height: 1920px;
+    zoom: 66.5%;
+}
+
+.USCLOGO {
+    display: block;
+    height: 250px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.USCBUILDING {
+    position: fixed;
+    margin-top: 1100px;
+    margin-left: 22px;
+    opacity: 0.4;
+    width: 1080px;
+    z-index: -1;
+}
+
+.EDGE {
+    position: fixed;
+    background-color: #009639;
+}
+
+.LEFT {
+    margin-top: -30px;
+    margin-left: -10px;
+    height: 1925px;
+    width: 23px;
+}
+
+.RIGHT {
+    margin-top: -30px;
+    margin-left: 1055px;
+    height: 1920px;
+    width: 22px;
+}
+
+.TOP {
+    margin-top: -34px;
+    height: 22px;
+    width: 1080px;
+}
+
+.BOTTOM {
+    margin-top: 1873px;
+    height: 22px;
+    width: 1080px;
+}
+
+
+/* Home Page CSS */
+#HOMEPAGE {
+    display: block;
+}
+
+.LOADINGSTATION, .EPLETE {
+    font-size: 73px;
+    text-align: center;
+    color: #009639;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.YOURID, .NOTYET {
+    font-size: 73px;
+    text-align: center;
+    color: #ff0d00;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.EPLETE, .YOURID {
+    margin-top: 220px;
+}
+
+.SCAN {
+    font-size: 43px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-top: 60px;
+}
+
+/* Thank You Page CSS */
+#THANKYOUPAGE {
+    display: none;
+}
+
+/* Not Registered Page CSS */
+#NOTREGISTEREDPAGE {
+    display: none;
+}
+
+/* Student and Driver Page CSS */
+#STUDENTPAGE {
+    display: none;
+}
+
+#DRIVERPAGE {
+    display: none;
+}
+
+.TITLE.STUDENT, .TITLE.DRIVER, .INSTRUCTION1 {
+    font-size: 60px;
+    text-align: center;
+    color: #009639;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+#studentname, #drivername {
+    font-size: 40px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+.STUDENTLOGO, .DRIVERLOGO {
+    display: block;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.INSTRUCTION2 {
+    font-size: 25px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+.WARNING1 {
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 60px;
+    font-size: 25px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #ff0d00;
+}
+
+.CONTAINERBOX {
+    text-align: center;
+}
+
+.BALANCEBOX {
+    display: inline-block;
+    vertical-align: top;
+    margin: auto;
+    height: 170px;
+    width: 300px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #009639;
+}
+
+.ARROW {
+    display: inline-block;
+    vertical-align: center;
+    height: 90px;
+    margin-top: 55px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.DRIVERBALANCEBOX {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-right: 40px;
+    height: 170px;
+    width: 310px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #009639;
+}
+
+#driverbalance, #currentbalance, #totalpassenger {
+    color: black;
+}
+
+.return {
+    display: block;
+    margin-left: auto;
+    margin-right: 120px;
+    background-color: #ffc20f;
+    height: 100px;
+    width: 330px;
+    border-radius: 60px;
+    border-width: 0px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 50px;;
+}
+
+#LOADING_CONTAINER {
+    display: none;
+    text-align: center;
+    margin-top: 400px;
+}
+
+.LOADING {
+    height: 120px;
+}
+
+#count {
+    font-size: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
